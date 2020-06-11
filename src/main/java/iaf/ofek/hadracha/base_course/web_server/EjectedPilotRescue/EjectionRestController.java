@@ -13,7 +13,9 @@ public class EjectionRestController {
   InMemoryMapDataBase dataBase;
   AirplanesAllocationManager airplanesAllocationManager;
 
-  public EjectionRestController(@Autowired InMemoryMapDataBase dataBase, @Autowired AirplanesAllocationManager airplanesAllocationManager) {
+  public EjectionRestController(
+      @Autowired InMemoryMapDataBase dataBase,
+      @Autowired AirplanesAllocationManager airplanesAllocationManager) {
     this.airplanesAllocationManager = airplanesAllocationManager;
     this.dataBase = dataBase;
   }
@@ -28,10 +30,10 @@ public class EjectionRestController {
       @RequestParam int ejectionId,
       @CookieValue(value = "client-id", defaultValue = "") String clientId) {
     EjectedPilotInfo ejectedPilotInfo = dataBase.getByID(ejectionId, EjectedPilotInfo.class);
-    if (ejectedPilotInfo.rescuedBy == null) {
-      ejectedPilotInfo.rescuedBy = clientId;
+    if (ejectedPilotInfo.getRescuedBy() == null) {
+      ejectedPilotInfo.setRescuedBy(clientId);
+      dataBase.update(ejectedPilotInfo);
+      airplanesAllocationManager.allocateAirplanesForEjection(ejectedPilotInfo, clientId);
     }
-    dataBase.update(ejectedPilotInfo);
-    airplanesAllocationManager.allocateAirplanesForEjection(ejectedPilotInfo, clientId);
   }
 }

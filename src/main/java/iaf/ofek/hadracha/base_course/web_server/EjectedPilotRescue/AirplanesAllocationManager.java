@@ -32,7 +32,7 @@ public class AirplanesAllocationManager {
         // The current algorithm - find the closest available airplane of each kind
 
         List<Airplane> airplanes = airSituationProvider.getAllAirplanes();
-        Coordinates ejectionCoordinates = ejectedPilotInfo.coordinates;
+        Coordinates ejectionCoordinates = ejectedPilotInfo.getCoordinates();
 
         Map<AirplaneKind, ClosestAirplane> closestAirplanes = new HashMap<>();
         closestAirplanes.put(AirplaneKind.Krav, new ClosestAirplane());
